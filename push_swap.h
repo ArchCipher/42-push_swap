@@ -28,7 +28,6 @@
 typedef struct  s_node
 {
     int             value;
-    // int             index;
     struct s_node   *prev;
     struct s_node   *next;
     struct s_node   *target;
@@ -81,6 +80,6 @@ int     stack_sorted(t_node *a);
 t_node  *find_extreme_node(t_node *stack, char ext);
 int     compare_values(t_node *extreme, t_node *stack, char ext);
 
-void    print_stack(t_node *a);
+// void    print_stack(t_node *a);
 
 #endif
