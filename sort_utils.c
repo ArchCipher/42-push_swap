@@ -22,7 +22,7 @@ int stack_sorted(t_node *a)
     return (1);
 }
 
-int compare_values(t_node *extreme, t_node *stack, char mode)
+int is_more_extreme(t_node *extreme, t_node *stack, char mode)
 {
     if (mode == SMALL)
         return(stack->value < extreme->value);
@@ -39,7 +39,7 @@ t_node  *find_extreme_node(t_node *stack, char mode)
     while (stack->next)
     {
         stack = stack->next;
-        if (compare_values(extreme, stack, mode))
+        if (is_more_extreme(extreme, stack, mode))
             extreme = stack;
     }
     return (extreme);

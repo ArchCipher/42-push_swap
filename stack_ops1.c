@@ -50,7 +50,7 @@ void    push(t_stack *src, t_stack *dst, char *str)
     else
         src->last = NULL;
     first->next = NULL;
-    append_front(dst, first);
+    add_front(dst, first);
     (src->len)--;
     (dst->len)++;
     write(STDOUT_FILENO, str, 3);
@@ -78,7 +78,7 @@ void    rotate(t_stack *stack, char *str)
     if (stack->first)
         (stack->first)->prev = NULL;
     first->next = NULL;
-    append_stack(stack, first);
+    add_last(stack, first);
     if (str)
         write(STDOUT_FILENO, str, 3);
 }
@@ -104,7 +104,7 @@ void    rev_rotate(t_stack *stack, char *str)
     stack->last = last->prev;
     (stack->last)->next = NULL;
     last->prev = NULL;
-    append_front(stack, last);
+    add_front(stack, last);
     if (str)
         write(STDOUT_FILENO, str, 4);
 }

@@ -1,5 +1,10 @@
 #include "push_swap.h"
 
+/*
+DESCRIPTION
+    It sorts a stack of 3 elements.
+*/
+
 void    sort_3(t_stack *a)
 {
     t_node  *biggest;
@@ -14,6 +19,11 @@ void    sort_3(t_stack *a)
     if ((a->first)->value > (a->first)->next->value)
         swap(a, SA);
 }
+
+/*
+DESCRIPTION
+    It sorts a stack of more than 3 elements.
+*/
 
 void    sort_stack(t_stack *a, t_stack *b)
 {
@@ -42,20 +52,8 @@ void    sort_stack(t_stack *a, t_stack *b)
 
 /*
 DESCRIPTION
-    When pushing from A → B (when s == A), finds the closest smaller number.
-    When pushing from B → A, finds the closest larger number.
+    It sets the target for the node to push to the target stack.
 */
-
-int check_direction(t_node *src, t_node *dst, char s)
-{
-    if (s == STACK_A && src-> target)
-        return (dst->value < src->value && dst->value > src->target->value); 
-    else if (s == STACK_A)
-        return(dst->value < src->value);
-    if (src->target)
-        return (dst->value > src->value && dst->value < src->target->value);
-    return (dst->value > src->value);
-}
 
 void    set_target(t_stack *src, t_stack *dst, char s)
 {
@@ -73,7 +71,7 @@ void    set_target(t_stack *src, t_stack *dst, char s)
         current_dst = dst->first;
         while (current_dst)
         {
-            if (check_direction(current_src, current_dst, s))
+            if (is_better_target(current_src, current_dst, s))
                 current_src->target = current_dst;
             current_dst = current_dst->next;
         }
@@ -85,91 +83,19 @@ void    set_target(t_stack *src, t_stack *dst, char s)
     }
 }
 
-void    calculate_cost_to_top(t_stack *stack)
+/*
+DESCRIPTION
+    When pushing from A → B (when s == A), finds the closest smaller number.
+    When pushing from B → A, finds the closest larger number.
+*/
+
+int is_better_target(t_node *src, t_node *dst, char s)
 {
-    t_node  *current;
-    int     i;
-    int     median;
-
-    i = 0;
-    current = stack->first;
-    median = stack->len / 2 + 1;
-    while (current && i < median)
-    {
-        current->cost = i++;
-        current->rotate = true;
-        current = current->next;
-    }
-    while (current && i < stack->len)
-    {
-        current->cost = stack->len - i++;
-        current->rotate = false;
-        current = current->next;
-    }
-}
-
-t_node  *find_cheapest_node(t_stack *src, t_stack *dst)
-{
-    t_node      *current;
-    t_node      *cheapest;
-
-    calculate_cost_to_top(src);
-    calculate_cost_to_top(dst);
-    current = src->first;
-    cheapest = src->first;
-    while (current)
-    {
-        current->rot_both_cost = 0;
-        if (current->rotate == current->target->rotate)
-        {
-            if (current->cost <= current->target->cost)
-                current->rot_both_cost = current->cost;
-            else
-                current->rot_both_cost = current->target->cost;
-        }
-        current->total_cost = current->cost + current->target->cost - current->rot_both_cost;
-        if (current->total_cost < cheapest->total_cost)
-            cheapest = current;
-        current = current->next;
-    }
-    return (cheapest);
-}
-
-void    bring_node_to_top(t_node *node, int node_cost, t_stack *stack, char stack_name)
-{
-    while (node_cost)
-    {
-        if (node->rotate && stack_name == STACK_A)
-            rotate(stack, RA);
-        else if (node->rotate && stack_name == STACK_B)
-            rotate(stack, RB);
-        else if (!node->rotate && stack_name == STACK_A)
-            rev_rotate(stack, RRA);
-        else
-            rev_rotate(stack , RRB);
-        node_cost--;
-    }
-}
-
-void    push_node_to_target(t_stack *src, t_stack *dst, char src_name, char dst_name)
-{
-    t_node  *node;
-    int     i;
-
-    i = 0;
-    node = find_cheapest_node(src, dst);
-    while (i < node->rot_both_cost)
-    {
-        if (node->rotate)
-            rotate_both(src, dst, UP);
-        else
-            rotate_both(src, dst, DOWN);
-        i++;
-    }
-    bring_node_to_top(node, node->cost - node->rot_both_cost, src, src_name);
-    bring_node_to_top(node->target, node->target->cost - node->rot_both_cost, dst, dst_name);
-    if (src_name == STACK_A)
-        push(src, dst, PB);
-    else
-        push(src, dst, PA);
+    if (s == STACK_A && src-> target)
+        return (dst->value < src->value && dst->value > src->target->value); 
+    else if (s == STACK_A)
+        return(dst->value < src->value);
+    if (src->target)
+        return (dst->value > src->value && dst->value < src->target->value);
+    return (dst->value > src->value);
 }

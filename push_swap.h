@@ -44,23 +44,23 @@ typedef struct  s_stack
     int         len;
 }               t_stack;
 
-// main
+// stack_init
+int     init_stack_a(int argc, char **argv, t_stack *a);
+int     parse_int(char **str);
+t_node	*new_node(int num);
 
 // stack_utils
-int     init_stack_a(int argc, char **argv, t_stack *a);
-int     ft_atoi_mod(char **str);
-t_node	*new_node(int num);
-void    append_front(t_stack *a, t_node *new);
-void    append_stack(t_stack *a, t_node *new);
+void    add_front(t_stack *a, t_node *new);
+void    add_last(t_stack *a, t_node *new);
 void    free_stack(t_stack *a);
 
-// operations
+// stack_ops1
 void    swap(t_stack *stack, char *str);
 void    push(t_stack *src, t_stack *dst, char *str);
 void    rotate(t_stack *stack, char *str);
 void    rev_rotate(t_stack *stack, char *str);
 
-// op_utils
+// stack_ops2
 void    swap_both(t_stack *a, t_stack *b);
 void    rotate_both(t_stack *a, t_stack *b, char direction);
 
@@ -68,17 +68,19 @@ void    rotate_both(t_stack *a, t_stack *b, char direction);
 void    sort_3(t_stack *a);
 void    sort_stack(t_stack *a, t_stack *b);
 void    set_target(t_stack *src, t_stack *dst, char s);
-int     check_direction(t_node *src, t_node *dst, char s);
-void    calculate_cost_to_top(t_stack *stack);
-t_node  *find_cheapest_node(t_stack *src, t_stack *dst);
-void    bring_node_to_top(t_node *node, int node_cost, t_stack *stack, char stack_name);
+int     is_better_target(t_node *src, t_node *dst, char s);
+
+// sort_execute
 void    push_node_to_target(t_stack *src, t_stack *dst, char src_name, char dst_name);
+t_node  *find_cheapest_node(t_stack *src, t_stack *dst);
+void    calculate_cost_to_top(t_stack *stack);
+void    bring_node_to_top(t_node *node, int node_cost, t_stack *stack, char stack_name);
 
 // sort_utils
 int     value_repeated(int num, t_node *a);
 int     stack_sorted(t_node *a);
 t_node  *find_extreme_node(t_node *stack, char ext);
-int     compare_values(t_node *extreme, t_node *stack, char ext);
+int     is_more_extreme(t_node *extreme, t_node *stack, char ext);
 
 // void    print_stack(t_node *a);
 
