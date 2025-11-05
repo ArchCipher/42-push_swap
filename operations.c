@@ -1,136 +1,110 @@
 #include "push_swap.h"
 
 /*
-sa (swap a): Swap the first 2 elements at the top of stack a.
-Do nothing if there is only one element or none.
-sb (swap b): Swap the first 2 elements at the top of stack b.
-Do nothing if there is only one element or none.
-ss : sa and sb at the same time.
-pa (push a): Take the first element at the top of b and put it at the top of a.
-Do nothing if b is empty.
-pb (push b): Take the first element at the top of a and put it at the top of b.
-Do nothing if a is empty.
-ra (rotate a): Shift up all elements of stack a by 1.
-The first element becomes the last one.
-rb (rotate b): Shift up all elements of stack b by 1.
-The first element becomes the last one.
-rr : ra and rb at the same time.
-rra (reverse rotate a): Shift down all elements of stack a by 1.
-The last element becomes the first one.
-rrb (reverse rotate b): Shift down all elements of stack b by 1.
-The last element becomes the first one.
-rrr : rra and rrb at the same time.
+DESCRIPTION
+    It swaps the first 2 elements at the top of stack.
+    If argument includes a valid string to print, it prints it.
+    It prints sa or sb along with a newline.
+
+    sa (swap a): Swap the first 2 elements at the top of stack a.
+    Does nothing if there is only one element or none.
+    sb (swap b): Swap the first 2 elements at the top of stack b.
+    Does nothing if there is only one element or none.
 */
+
+void    swap(t_stack *stack, char *str)
+{
+    int tmp;
+
+    if (!stack || !(stack->first) || !(stack->first)->next)
+        return ;
+    tmp = (stack->first)->value;
+    (stack->first)->value = (stack->first)->next->value;
+    (stack->first)->next->value = tmp;
+    if (str)
+        write(STDOUT_FILENO, str, 3);
+}
 
 /*
 DESCRIPTION
-   It simulates a stack swap by swapping the first 2 elements
-   at the top of stack. If argument includes a valid string to print,
-   it prints it.
+    It pushes one element from one stack to another.
+    If argument includes a valid string to print, it prints it.
+    It prints pa or pb along with a newline.
+
+    pa (push a): Take the first element at the top of b and put it at the top of a.
+    Does nothing if b is empty.
+    pb (push b): Take the first element at the top of a and put it at the top of b.
+    Does nothing if a is empty.
 */
 
-// swap values: will have right indices
-void    swap(t_stack **stack, char *str)
+void    push(t_stack *src, t_stack *dst, char *str)
 {
-    int tmp;
+    t_node *first;
 
-    if (!*stack || !(*stack)->next)
+    if (!src || !dst || !src->first)
         return ;
-    tmp = (*stack)->value;
-    (*stack)->value = (*stack)->next->value;
-    (*stack)->next->value = tmp;
-    if (str)
-        write(STDOUT_FILENO, str, 3);
-}
-
-void    push(t_stack **from, t_stack **to, char *str)
-{
-    t_stack *head;
-    if (!from || !to || !*from)
-        return ;
-    head = *from;
-    if ((*from)->next)
-        (*from)->next->prev = NULL;
-    *from = (*from)->next;
-    (*to)->prev = head;
-    head->next = *to;
-    *to = head;
+    first = src->first;
+    src->first = first->next;
+    if (src->first)
+        (src->first)->prev = NULL;
+    else
+        src->last = NULL;
+    first->next = NULL;
+    append_front(dst, first);
+    (src->len)--;
+    (dst->len)++;
     write(STDOUT_FILENO, str, 3);
 }
 
-// switch pointers: will have wrong indices
-void    rotate(t_stack **stack, char *str)
+/*
+DESCRIPTION
+    It takes the first element from the stack and moves it to the end.
+    If argument includes a valid string to print, it prints it (ra or rb).
+
+    ra (rotate a): Shift up all elements of stack a by 1.
+    The first element becomes the last one.
+    rb (rotate b): Shift up all elements of stack b by 1.
+    The first element becomes the last one.
+*/
+
+void    rotate(t_stack *stack, char *str)
 {
-    t_stack *first;
-    t_stack *last;
+    t_node *first;
  
-    if (!stack || !*stack)
+    if (!stack || !stack->first || !stack->last || stack->first == stack->last)
         return ;
-    first = *stack;
-    *stack = first->next;
-    (*stack)->prev = NULL;
+    first = stack->first;
+    stack->first = first->next;
+    if (stack->first)
+        (stack->first)->prev = NULL;
     first->next = NULL;
-    last = find_last(*stack);
-    append_stack(stack, last, first);
+    append_stack(stack, first);
     if (str)
         write(STDOUT_FILENO, str, 3);
 }
 
-// switch pointers: will have wrong indices
-void    rev_rotate(t_stack **stack, char *str)
+/*
+DESCRIPTION
+    It takes the last element from the stack and moves it to the beginning.
+    If argument includes a valid string to print, it prints it (rra or rrb).
+
+    rra (reverse rotate a): Shift down all elements of stack a by 1.
+    The last element becomes the first one.
+    rrb (reverse rotate b): Shift down all elements of stack b by 1.
+    The last element becomes the first one.
+*/
+
+void    rev_rotate(t_stack *stack, char *str)
 {
-    t_stack *last;
- 
-    if (!stack || !*stack)
+    t_node *last;
+
+    if (!stack || !stack->first || !stack->last || stack->first == stack->last)
         return ;
-    last = find_last(*stack);
-    if (last->prev)
-        last->prev->next = NULL;
-    (*stack)->prev = last;
-    last->next = *stack;
+    last = stack->last;
+    stack->last = last->prev;
+    (stack->last)->next = NULL;
     last->prev = NULL;
-    *stack = last;
+    append_front(stack, last);
     if (str)
         write(STDOUT_FILENO, str, 4);
 }
-
-/*---------SWAP POINTERS---------
-void swap(t_stack **stack, char *str)
-{
-    t_stack *tmp;
-   
-    if (!*stack || !(*stack)->next)
-        return ;
-    tmp = *stack;
-    *stack = (*stack)->next;
-    (*stack)->prev = tmp->prev;
-    tmp->next = (*stack)->next;
-    if (tmp->next)
-        tmp->next->prev = tmp;
-    tmp->prev = *stack;
-    (*stack)->next = tmp;
-    if (str)
-        write(STDOUT_FILENO, str, 3);
-}
-*/
-
-/*--------ROTATE VALUES-----------
-void    rotate(t_stack **stack, char *str)
-{
-    int tmp;
-    t_stack *current;
- 
-    if (!*stack || !(*stack)->next)
-        return ;
-    current = *stack;
-    while(current->next)
-    {
-        tmp = current->value;
-        current->value = current->next->value;
-        current->next->value = tmp;
-        current = current->next;
-    }
-    if (str)
-        write(STDOUT_FILENO, str, 3);
-}
-*/

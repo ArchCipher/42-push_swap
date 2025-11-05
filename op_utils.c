@@ -1,31 +1,37 @@
 #include "push_swap.h"
 
-void    ss(t_stack **a, t_stack **b)
+/*
+DESCRIPTION
+    It swaps the first 2 elements of both stacks.
+
+    ss (swap both) : sa and sb at the same time.
+*/
+
+void    swap_both(t_stack *a, t_stack *b)
 {
     swap(a, NULL);
     swap(b, NULL);
-    write(STDOUT_FILENO, "ss\n", 3);
+    write(STDOUT_FILENO, SS, 3);
 }
 
-void    rotate_both(t_stack **a, t_stack **b, char direction)
+/*
+DESCRIPTION
+    It rotates or reverse rotates both stacks.
+    If direction is UP, it rotates, if DOWN it reverse rotates the stacks.
+
+    rr (rotate both) : ra and rb at the same time.
+    rrr (reverse rotate both) : rra and rrb at the same time.
+*/
+void    rotate_both(t_stack *a, t_stack *b, char direction)
 {
-    if (direction == 'u')
+    if (direction == UP)
     {
         rotate(a, NULL);
         rotate(b, NULL);
-        write(STDOUT_FILENO, "rr\n", 3);
+        write(STDOUT_FILENO, RR, 3);
         return ;
     }
     rev_rotate(a, NULL);
     rev_rotate(b, NULL);
-    write(STDOUT_FILENO, "rrr\n", 4);
-}
-
-t_stack *find_last(t_stack *stack)
-{
-    if (!stack)
-        return (NULL);
-    while(stack->next)
-        stack = stack->next;
-    return (stack);
+    write(STDOUT_FILENO, RRR, 4);
 }

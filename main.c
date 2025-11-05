@@ -3,17 +3,12 @@
 /*
 	NAME
 		push_swap
-	SYNOPSIS
-		#include "get_next_line.h"
-	PROTOTYPE
-		char *get_next_line(stack a);   //stack a is a list of integers
 	DESCRIPTION:
-		Sort stacks
+		Sort a stack of integers using the least number of instructions.
 	RETURN VALUE
-		Returns the shortest sequence of instructions needed to sort stack a
-        with the smallest number at the top. If no parameters are specified,
-		it returns nothing. In case of error, it returns "Error" followed
-		by an '\n' on the standard error.
+		Returns the shortest sequence of instructions needed to sort the stack
+        in ascending order. If no parameters are specified, it returns nothing.
+        In case of error, it returns "Error" followed by an '\n' on the standard error.
 	EXTERNAL FUNC(S)
 		read, write, malloc, free, exit
         ft_printf, ft_libft
@@ -60,6 +55,11 @@ sort 3:
     if biggest in middle
         rr
     sa
+
+// a to smallest in b
+    b to biggest in a
+// b to biggest in a
+    a to smallest in b
 
 sort stacks:
 while stack_len > 3
@@ -112,29 +112,36 @@ rotate both:
     set current_node for a and b
 ---------------PSEUDO CODE----------------------*/
 
+void    print_stack(t_node *a)
+{
+    int count = 0;
+    while (a)
+    {
+        printf("[%d]: %d\n", count, a->value);
+        a = a->next;
+        count++;
+    }
+}
+
 int main(int argc, char **argv)
 {
-    // t_stacks    stacks;
-    t_stack *a;
-    t_stack *b;
-    int     a_len;
+    t_stack    a;
+    t_stack    b;
 
-    if (argc < 2) // || (argc == 2 && argv[1][0] == '\0'))
+    if (argc < 2 || (argc == 2 && argv[1][0] == '\0'))
         return (-1);
-    // ft_memset(&stacks, 0, sizeof(t_stacks));
-    a = NULL;
-    b = NULL;
-    a_len = 0;
-    if (!init_stack_a(argc, argv + 1, &a, &a_len))
-        return (write(STDERR_FILENO, "Error\n", 6));
-    if (!stack_sorted(a))
+    ft_memset(&a, 0, sizeof(t_stack));
+    ft_memset(&b, 0, sizeof(t_stack));
+    if (!init_stack_a(argc, argv + 1, &a))
+        return (write(STDERR_FILENO, "Error\n", 6), -1);
+    if (!stack_sorted(a.first))
     {
-        if (a_len == 2)
+        if (a.len == 2)
             swap(&a, "sa\n");
-        else if (a_len == 3)
+        else if (a.len == 3)
             sort_3(&a);
-        else if (a_len > 3)
-            sort_stack(&a, &b, a_len);
+        else if (a.len > 3)
+            sort_stack(&a, &b);
     }
     free_stack(&a);
     return (0);

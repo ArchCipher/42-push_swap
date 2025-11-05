@@ -1,8 +1,8 @@
 # include "push_swap.h"
 
-int value_repeated(int num, t_stack *a)
+int value_repeated(int num, t_node *a)
 {
-    while(a != NULL && a->value)
+    while (a)
     {
         if (a->value == num)
             return (1);
@@ -11,9 +11,9 @@ int value_repeated(int num, t_stack *a)
     return (0);
 }
 
-int stack_sorted(t_stack *a)
+int stack_sorted(t_node *a)
 {
-    while(a && a->next)
+    while (a && a->next)
     {
         if (a->value > a->next->value)
             return (0);
@@ -22,32 +22,25 @@ int stack_sorted(t_stack *a)
     return (1);
 }
 
-int len_sorted(t_stack *a)
+int compare_values(t_node *extreme, t_node *stack, char mode)
 {
-    t_stack *last;
-    int len;
-
-    len = 0;
-    last = find_last(a);
-    if (!last)
-        return (0);
-    while(last->prev && last->value > last->prev->value)
-        last = last->prev;
-    return (len);
+    if (mode == SMALL)
+        return(stack->value < extreme->value);
+    return (stack->value > extreme->value);
 }
 
-t_stack *find_biggest(t_stack *a, int count)
+t_node  *find_extreme_node(t_node *stack, char mode)
 {
-    t_stack *biggest;
+    t_node *extreme;
 
-    if (!a)
+    if (!stack)
         return (NULL);
-    biggest = a;
-    while (count-- > 1 && a->next)
+    extreme = stack;
+    while (stack->next)
     {
-        a = a->next;
-        if (biggest->value < a->value)
-            biggest = a;
+        stack = stack->next;
+        if (compare_values(extreme, stack, mode))
+            extreme = stack;
     }
-    return (biggest);
+    return (extreme);
 }

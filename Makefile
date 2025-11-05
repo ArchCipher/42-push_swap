@@ -16,7 +16,7 @@ HEADER		= -I.
 
 #			Sources & Objects
 MSRCS		= \
-	   		main init_stack operations op_utils sort sort_utils
+	   		main operations op_utils stack_utils sort sort_utils
 # BSRCS		= \
 # 			checker
 SRCS		= $(addsuffix .c, $(MSRCS))
@@ -25,7 +25,7 @@ OBJS	= $(SRCS:.c=.o)
 # BONUS_OBJS	= $(BONUS_SRCS:.c=.o)
 
 %.o: %.c
-	$(CC) $(FLAGS) -c $< -o $@
+	$(CC) $(FLAGS) -g -c $< -o $@
 
 all: $(NAME)
 
