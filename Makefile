@@ -16,7 +16,7 @@ HEADER		= -I.
 
 #			Sources & Objects
 MSRCS		= \
-	   		main stack_ops1 stack_ops2 stack_init stack_utils sort sort_utils
+	   		main stack_ops1 stack_ops2 stack_init stack_utils sort sort_execute sort_utils
 # BSRCS		= \
 # 			checker
 SRCS		= $(addsuffix .c, $(MSRCS))
