@@ -53,7 +53,8 @@ void    push(t_stack *src, t_stack *dst, char *str)
     add_front(dst, first);
     (src->len)--;
     (dst->len)++;
-    write(STDOUT_FILENO, str, 3);
+    if (str)
+        write(STDOUT_FILENO, str, 3);
 }
 
 /*

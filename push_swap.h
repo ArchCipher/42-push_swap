@@ -1,11 +1,17 @@
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 
-# include <stdbool.h>
+# include <stdio.h>      // printf (to remove)
+
 # include <errno.h>     // error
-# include <unistd.h>    // write
-# include "../libft/libft.h"
-#include <stdio.h>      // printf (to remove)
+# include <limits.h>    // INT_MAX
+# include <stdbool.h>   // boolean
+// # include <stdint.h>    // SIZE_MAX
+# include <stdlib.h>    // malloc, free
+# include <unistd.h>    // read, write, ssize_t
+
+# define STACK_A 'A'
+# define STACK_B 'B'
 
 # define SA "sa\n"
 # define SB "sb\n"
@@ -18,12 +24,14 @@
 # define RRA "rra\n"
 # define RRB "rrb\n"
 # define RRR "rrr\n"
+
 # define UP 'U'
 # define DOWN 'D'
-# define STACK_A 'A'
-# define STACK_B 'B'
+
 # define BIG 'b'
 # define SMALL 's'
+
+# define BUFFER_SIZE 256
 
 typedef struct  s_node
 {
@@ -81,6 +89,22 @@ int     value_repeated(int num, t_node *a);
 int     stack_sorted(t_node *a);
 t_node  *find_extreme_node(t_node *stack, char ext);
 int     is_more_extreme(t_node *extreme, t_node *stack, char ext);
+
+// get_next_line
+char	*get_next_line(int fd);
+ssize_t	read_buffer(int fd, char *buf);
+char	*grow_line(char *line, size_t line_len, size_t append_len,
+			size_t *capacity);
+char	*append_line(char *line, size_t *line_len, char *buf,
+			size_t append_len);
+
+// utils
+// push_swap: isdigit, memset; gnl: strlen, memcpy, memchr
+int	    ft_isdigit(int c);
+void	*ft_memset(void *b, int c, size_t len);
+size_t	ft_strlen(const char *s);
+void	*ft_memcpy(void *dst, const void *src, size_t n);
+void	*ft_memchr(const void *s, int c, size_t n);
 
 // void    print_stack(t_node *a);
 

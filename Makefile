@@ -1,10 +1,6 @@
-#add header for all files
-
 #			Library and Project names
 NAME		= push_swap
-# BONUS		= checker
-LIB_DIR		= ../libft
-LIB			= libft.a
+BONUS		= checker
 
 #			Compiler and Flags
 CC			= cc
@@ -15,14 +11,19 @@ SFLAGS		= -fsanitize=address
 HEADER		= -I.
 
 #			Sources & Objects
-MSRCS		= \
-	   		main stack_ops1 stack_ops2 stack_init stack_utils sort sort_execute sort_utils
-# BSRCS		= \
-# 			checker
+MSRCS		= push_swap \
+			stack_ops1 stack_ops2 \
+			stack_init stack_utils \
+			sort sort_execute sort_utils \
+			utils
+BSRCS		= checker \
+			get_next_line get_next_line_utils \
+			utils
+
 SRCS		= $(addsuffix .c, $(MSRCS))
-# BONUS_SRCS	= $(addsuffix .c, $(BSRCS))
+BONUS_SRCS	= $(addsuffix .c, $(BSRCS))
 OBJS	= $(SRCS:.c=.o)
-# BONUS_OBJS	= $(BONUS_SRCS:.c=.o)
+BONUS_OBJS	= $(BONUS_SRCS:.c=.o)
 
 %.o: %.c
 	$(CC) $(FLAGS) -g -c $< -o $@
@@ -30,11 +31,10 @@ OBJS	= $(SRCS:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	make -C $(LIB_DIR) && make -C $(LIB_DIR) clean
-	$(CC) $(FLAGS) $(SFLAGS) -g $(HEADER) $(LIB_DIR)/$(LIB) $^ -o $@
+	$(CC) $(FLAGS) $(SFLAGS) -g $(HEADER) $^ -o $@
 
-# bonus: $(BONUS_OBJS)
-# 	$(CC) $(FLAGS) -g $(HEADER) $^ -o $@
+bonus: $(BONUS_OBJS)
+	$(CC) $(FLAGS) $(SFLAGS) -g $(HEADER) $^ -o $@
 
 clean:
 	rm -f $(OBJS)
