@@ -60,11 +60,18 @@ void    sort_3(t_stack *a);
 void    sort_stack(t_stack *a, t_stack *b);
 
 // sort_execute
-void    push_node_to_target(t_stack *src, t_stack *dst, char src_name, char dst_name);
+void    push_cheapest_node(t_stack *src, t_stack *dst, char src_name, char dst_name);
 void    bring_node_to_top(t_node *node, int node_cost, t_stack *stack, char stack_name);
 
-// CHECKER
+// CHECKER (BONUS)
+// get_next_line
 char	*get_next_line(int fd);
+
+// checker_utils
+int		parse_operation(char *line, t_stack *a, t_stack *b);
+void	print_output(t_stack *a, t_stack *b);
+int     error_handler(char *line, t_stack *a, t_stack *b);
+
 
 // SHARED BY BOTH PUSH_SWAP AND CHECKER
 // stack_init

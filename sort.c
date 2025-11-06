@@ -1,7 +1,7 @@
 #include "push_swap.h"
 
-static void set_target(t_stack *src, t_stack *dst, char s);
-static int  is_better_target(t_node *src, t_node *dst, char s);
+static void set_target_nodes(t_stack *src, t_stack *dst, char stack_name);
+static int  is_better_target(t_node *src, t_node *dst, char stack_name);
 static void set_node_costs(t_stack *stack);
 
 /*
@@ -38,21 +38,20 @@ void    sort_stack(t_stack *a, t_stack *b)
         push(a, b, PB);
     while (a->len > 3 && !stack_sorted(a->first))
     {
-        set_target(a, b, STACK_A);
+        set_target_nodes(a, b, STACK_A);
         set_node_costs(a);
         set_node_costs(b);
-        push_node_to_target(a, b, STACK_A, STACK_B);
+        push_cheapest_node(a, b, STACK_A, STACK_B);
     }
     if (!stack_sorted(a->first) && a->len == 3)
         sort_3(a);
     while (b->len)
     {
-        set_target(b, a, STACK_B);
+        set_target_nodes(b, a, STACK_B);
         set_node_costs(a);
         set_node_costs(b);
-        push_node_to_target(b, a, STACK_B, STACK_A);
+        push_cheapest_node(b, a, STACK_B, STACK_A);
     }
-    // update cost to top as necessary or create a function to calculate single cost?
     set_node_costs(a);
     smallest = find_extreme_node(a->first, SMALL);
     bring_node_to_top(smallest, smallest->cost, a, STACK_A);
@@ -60,10 +59,14 @@ void    sort_stack(t_stack *a, t_stack *b)
 
 /*
 DESCRIPTION
-    It sets the target for the node to push to the target stack.
+    It sets a target node for all nodes in source.
+    If source is a, the target node is the closest smaller number in b,
+    or the biggest number in b in case of no smaller number.
+    If source is b, the target node is the closest larget number in a,
+    or the smallest number in a in case of no bigger number.
 */
 
-static void    set_target(t_stack *src, t_stack *dst, char s)
+static void    set_target_nodes(t_stack *src, t_stack *dst, char stack_name)
 {
     t_node  *current_src;
     t_node  *current_dst;
@@ -79,13 +82,13 @@ static void    set_target(t_stack *src, t_stack *dst, char s)
         current_dst = dst->first;
         while (current_dst)
         {
-            if (is_better_target(current_src, current_dst, s))
+            if (is_better_target(current_src, current_dst, stack_name))
                 current_src->target = current_dst;
             current_dst = current_dst->next;
         }
-        if (s == STACK_A && current_src->target == NULL)
+        if (stack_name == STACK_A && current_src->target == NULL)
             current_src->target = biggest_dst;
-        else if (s == STACK_B && current_src->target == NULL)
+        else if (stack_name == STACK_B && current_src->target == NULL)
            current_src->target = smallest_dst; 
         current_src = current_src->next;
     }
@@ -93,15 +96,15 @@ static void    set_target(t_stack *src, t_stack *dst, char s)
 
 /*
 DESCRIPTION
-    When pushing from A → B (when s == A), finds the closest smaller number.
-    When pushing from B → A, finds the closest larger number.
+    If source is a, finds the closest smaller number.
+    If source is b, finds the closest larger number.
 */
 
-static int  is_better_target(t_node *src, t_node *dst, char s)
+static int  is_better_target(t_node *src, t_node *dst, char stack_name)
 {
-    if (s == STACK_A && src-> target)
+    if (stack_name == STACK_A && src-> target)
         return (dst->value < src->value && dst->value > src->target->value); 
-    else if (s == STACK_A)
+    else if (stack_name == STACK_A)
         return(dst->value < src->value);
     if (src->target)
         return (dst->value > src->value && dst->value < src->target->value);
@@ -110,7 +113,9 @@ static int  is_better_target(t_node *src, t_node *dst, char s)
 
 /*
 DESCRIPTION
-    It calculates the cost to bring the node to the top of the stack.
+    It sets the cost to bring each node to the top of the stack.
+    Above median the cost is the value of its index and below median,
+    it is the value of stack_len - index.
 */
 
 static void    set_node_costs(t_stack *stack)

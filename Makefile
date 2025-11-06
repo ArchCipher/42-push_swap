@@ -15,7 +15,7 @@ MSRCS		= push_swap \
 			sort sort_execute
 
 BSRCS		= checker_bonus \
-			get_next_line_bonus
+			checker_utils_bonus get_next_line_bonus
 
 SSRCS		= stack_ops1 stack_ops2 \
 			stack_init stack_utils \
@@ -34,12 +34,12 @@ BONUS_OBJS	= $(BONUS_SRCS:.c=.o) $(SHARED_OBJS)
 all: $(NAME)
 
 $(NAME): $(MAN_OBJS) 
-	$(CC) $(FLAGS) $(SFLAGS) -g $(HEADER) $^ -o $@
+	$(CC) $(FLAGS) $(SFLAGS) -g $(HEADER) $? -o $@
 
 bonus: $(BONUS)
 
 $(BONUS): $(BONUS_OBJS)
-	$(CC) $(FLAGS) $(SFLAGS) -g $(HEADER) $^ -o $@
+	$(CC) $(FLAGS) $(SFLAGS) -g $(HEADER) $? -o $@
 
 clean:
 	rm -f $(MAN_OBJS) $(BONUS_OBJS) $(SHARED_OBJS)

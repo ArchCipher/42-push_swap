@@ -70,8 +70,8 @@ static int	parse_int(char **str)
 
 /*
 DESCRIPTION
-    It creates a new node with the given integer value and returns it.
-    Returns the new node or NULL on error.
+    It creates a new node with the given integer value and returns the new node
+    or NULL if the allocation fails.
 */
 
 static t_node	*new_node(int num)

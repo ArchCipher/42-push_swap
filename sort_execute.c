@@ -4,10 +4,12 @@ static t_node  *find_cheapest_node(t_stack *src);
 
 /*
 DESCRIPTION
-    It pushes the node to the target stack.
+    It finds the node with the lowest total cost and performs rotation both stacks at once.
+    It brings the cheapest node and its target node to the top of the source stack and target stack,
+    and pushes the cheapest node to the target stack. It prints all operations performed on standard output.
 */
 
-void    push_node_to_target(t_stack *src, t_stack *dst, char src_name, char dst_name)
+void    push_cheapest_node(t_stack *src, t_stack *dst, char src_name, char dst_name)
 {
     t_node  *node;
     int     i;
@@ -32,7 +34,8 @@ void    push_node_to_target(t_stack *src, t_stack *dst, char src_name, char dst_
 
 /*
 DESCRIPTION
-    It brings the node to the top of the stack.
+    It brings a particular node to the top of the stack and prints all rotation operations
+    performed on standard output.
 */
 
 void    bring_node_to_top(t_node *node, int node_cost, t_stack *stack, char stack_name)
@@ -53,7 +56,8 @@ void    bring_node_to_top(t_node *node, int node_cost, t_stack *stack, char stac
 
 /*
 DESCRIPTION
-    It finds the cheapest node to push to the target stack.
+    It calculates the cost to rotation both stacks at once and the total cost of each node and
+    returns the node with the lowest total cost.
 */
 
 static t_node  *find_cheapest_node(t_stack *stack)

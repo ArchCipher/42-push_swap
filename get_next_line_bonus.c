@@ -30,7 +30,7 @@ static char	*append_line(char *line, size_t *line_len, char *buf,
 		between calls. The buffer size can be defined by the BUFFER_SIZE macro
 		during compilation.
 	RETURN VALUE
-		Returns the next line (including \n) or NULL on EOF/error.
+		Returns the next line (including '\n') or NULL on EOF/error.
 	EXTERNAL FUNC(S)
 		read, malloc, free
 */

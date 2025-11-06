@@ -2,6 +2,11 @@
 
 static int  is_more_extreme(t_node *extreme, t_node *stack, char mode);
 
+/*
+DESCRIPTION
+    It checks if a value is repeated in the stack.
+*/
+
 bool value_repeated(int num, t_node *a)
 {
     while (a)
@@ -13,6 +18,11 @@ bool value_repeated(int num, t_node *a)
     return (false);
 }
 
+/*
+DESCRIPTION
+    It checks if the stack is sorted in ascending order.
+*/
+
 bool stack_sorted(t_node *a)
 {
     while (a && a->next)
@@ -23,6 +33,11 @@ bool stack_sorted(t_node *a)
     }
     return (true);
 }
+
+/*
+DESCRIPTION
+    It finds the extreme node (smallest or biggest) in the stack.
+*/
 
 t_node  *find_extreme_node(t_node *stack, char mode)
 {
@@ -39,6 +54,11 @@ t_node  *find_extreme_node(t_node *stack, char mode)
     }
     return (extreme);
 }
+
+/*
+DESCRIPTION
+    It checks if a node is more extreme (smaller or bigger) than the other.
+*/
 
 static int  is_more_extreme(t_node *extreme, t_node *stack, char mode)
 {

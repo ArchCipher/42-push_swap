@@ -2,7 +2,7 @@
 
 /*
 DESCRIPTION
-    It adds a new node to the front of the stack.
+    It adds the new node to the front of the stack.
 */
 
 void    add_front(t_stack *a, t_node *new)
@@ -19,7 +19,7 @@ void    add_front(t_stack *a, t_node *new)
 
 /*
 DESCRIPTION
-    It adds a new node to the end of the stack.
+    It adds the new node to the end of the stack.
 */
 
 void    add_last(t_stack *a, t_node *new)
