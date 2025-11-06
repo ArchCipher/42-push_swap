@@ -1,5 +1,9 @@
 #include "push_swap.h"
 
+static void set_target(t_stack *src, t_stack *dst, char s);
+static int  is_better_target(t_node *src, t_node *dst, char s);
+static void set_node_costs(t_stack *stack);
+
 /*
 DESCRIPTION
     It sorts a stack of 3 elements.
@@ -35,6 +39,8 @@ void    sort_stack(t_stack *a, t_stack *b)
     while (a->len > 3 && !stack_sorted(a->first))
     {
         set_target(a, b, STACK_A);
+        set_node_costs(a);
+        set_node_costs(b);
         push_node_to_target(a, b, STACK_A, STACK_B);
     }
     if (!stack_sorted(a->first) && a->len == 3)
@@ -42,10 +48,12 @@ void    sort_stack(t_stack *a, t_stack *b)
     while (b->len)
     {
         set_target(b, a, STACK_B);
+        set_node_costs(a);
+        set_node_costs(b);
         push_node_to_target(b, a, STACK_B, STACK_A);
     }
-    // update cost to op as necessary or create a function to calculate isngle cost
-    calculate_cost_to_top(a);
+    // update cost to top as necessary or create a function to calculate single cost?
+    set_node_costs(a);
     smallest = find_extreme_node(a->first, SMALL);
     bring_node_to_top(smallest, smallest->cost, a, STACK_A);
 }
@@ -55,7 +63,7 @@ DESCRIPTION
     It sets the target for the node to push to the target stack.
 */
 
-void    set_target(t_stack *src, t_stack *dst, char s)
+static void    set_target(t_stack *src, t_stack *dst, char s)
 {
     t_node  *current_src;
     t_node  *current_dst;
@@ -89,7 +97,7 @@ DESCRIPTION
     When pushing from B → A, finds the closest larger number.
 */
 
-int is_better_target(t_node *src, t_node *dst, char s)
+static int  is_better_target(t_node *src, t_node *dst, char s)
 {
     if (s == STACK_A && src-> target)
         return (dst->value < src->value && dst->value > src->target->value); 
@@ -98,4 +106,32 @@ int is_better_target(t_node *src, t_node *dst, char s)
     if (src->target)
         return (dst->value > src->value && dst->value < src->target->value);
     return (dst->value > src->value);
+}
+
+/*
+DESCRIPTION
+    It calculates the cost to bring the node to the top of the stack.
+*/
+
+static void    set_node_costs(t_stack *stack)
+{
+    t_node  *current;
+    int     i;
+    int     median;
+
+    i = 0;
+    current = stack->first;
+    median = stack->len / 2 + 1;
+    while (current && i < median)
+    {
+        current->cost = i++;
+        current->rotate = true;
+        current = current->next;
+    }
+    while (current && i < stack->len)
+    {
+        current->cost = stack->len - i++;
+        current->rotate = false;
+        current = current->next;
+    }
 }

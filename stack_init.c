@@ -1,11 +1,14 @@
 #include "push_swap.h"
 
+static int     parse_int(char **str);
+static t_node	*new_node(int num);
+
 /*
 DESCRIPTION
     It initializes the stack 'a' with the values from the command line arguments.
-    It handles single (spaces separated) or multiple arguments.
+    It handles single spaces separated argument or multiple arguments (array of strings).
+    Returns 1 on success, 0 on error.
     Repeated values, invalid input, and overflow are considered errors.
-    It returns 1 if successful, 0 in case of error.
 */
 
 int init_stack_a(int argc, char **argv, t_stack *a)
@@ -34,14 +37,12 @@ int init_stack_a(int argc, char **argv, t_stack *a)
 
 /*
 DESCRIPTION
-    It is modified version of atoi that does not skip spaces in the beginning.
-    It converts a string to an integer and returns the converted integer.
-    Sets errno to EINVAL in case of invalid input, ERANGE in case of overflow
-    or underflow.
-    It returns the converted integer or -1 in case of error.
+    It parses an integer from a string and returns the parsed integer.
+    Sets errno to EINVAL in case of invalid input, ERANGE in case of overflow or underflow.
+    Returns the parsed integer or -1 on error.
 */
 
-int	parse_int(char **str)
+static int	parse_int(char **str)
 {
 	int     num;
 	int		sign;
@@ -68,17 +69,17 @@ int	parse_int(char **str)
 
 /*
 DESCRIPTION
-    It creates a new node with the given value and returns it.
-    In case of error, it sets errno to ENOMEM and returns NULL.
+    It creates a new node with the given integer value and returns it.
+    Returns the new node or NULL on error.
 */
 
-t_node	*new_node(int num)
+static t_node	*new_node(int num)
 {
 	t_node	*new;
 
 	new = malloc(sizeof(t_node));
 	if (!new)
-		return (errno = ENOMEM, NULL);
+		return (NULL);
     ft_memset(new, 0, sizeof(t_node));
 	new->value = num;
 	return (new);

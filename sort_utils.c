@@ -1,32 +1,27 @@
 # include "push_swap.h"
 
-int value_repeated(int num, t_node *a)
+static int  is_more_extreme(t_node *extreme, t_node *stack, char mode);
+
+bool value_repeated(int num, t_node *a)
 {
     while (a)
     {
         if (a->value == num)
-            return (1);
+            return (true);
         a = a->next;
     }
-    return (0);
+    return (false);
 }
 
-int stack_sorted(t_node *a)
+bool stack_sorted(t_node *a)
 {
     while (a && a->next)
     {
         if (a->value > a->next->value)
-            return (0);
+            return (false);
         a = a->next;
     }
-    return (1);
-}
-
-int is_more_extreme(t_node *extreme, t_node *stack, char mode)
-{
-    if (mode == SMALL)
-        return(stack->value < extreme->value);
-    return (stack->value > extreme->value);
+    return (true);
 }
 
 t_node  *find_extreme_node(t_node *stack, char mode)
@@ -43,4 +38,11 @@ t_node  *find_extreme_node(t_node *stack, char mode)
             extreme = stack;
     }
     return (extreme);
+}
+
+static int  is_more_extreme(t_node *extreme, t_node *stack, char mode)
+{
+    if (mode == SMALL)
+        return(stack->value < extreme->value);
+    return (stack->value > extreme->value);
 }

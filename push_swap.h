@@ -52,10 +52,21 @@ typedef struct  s_stack
     int         len;
 }               t_stack;
 
+// PUSH_SWAP
+// sort
+void    sort_3(t_stack *a);
+void    sort_stack(t_stack *a, t_stack *b);
+
+// sort_execute
+void    push_node_to_target(t_stack *src, t_stack *dst, char src_name, char dst_name);
+void    bring_node_to_top(t_node *node, int node_cost, t_stack *stack, char stack_name);
+
+// CHECKER
+char	*get_next_line(int fd);
+
+// SHARED BY BOTH PUSH_SWAP AND CHECKER
 // stack_init
 int     init_stack_a(int argc, char **argv, t_stack *a);
-int     parse_int(char **str);
-t_node	*new_node(int num);
 
 // stack_utils
 void    add_front(t_stack *a, t_node *new);
@@ -72,31 +83,10 @@ void    rev_rotate(t_stack *stack, char *str);
 void    swap_both(t_stack *a, t_stack *b);
 void    rotate_both(t_stack *a, t_stack *b, char direction);
 
-// sort
-void    sort_3(t_stack *a);
-void    sort_stack(t_stack *a, t_stack *b);
-void    set_target(t_stack *src, t_stack *dst, char s);
-int     is_better_target(t_node *src, t_node *dst, char s);
-
-// sort_execute
-void    push_node_to_target(t_stack *src, t_stack *dst, char src_name, char dst_name);
-t_node  *find_cheapest_node(t_stack *src, t_stack *dst);
-void    calculate_cost_to_top(t_stack *stack);
-void    bring_node_to_top(t_node *node, int node_cost, t_stack *stack, char stack_name);
-
 // sort_utils
-int     value_repeated(int num, t_node *a);
-int     stack_sorted(t_node *a);
-t_node  *find_extreme_node(t_node *stack, char ext);
-int     is_more_extreme(t_node *extreme, t_node *stack, char ext);
-
-// get_next_line
-char	*get_next_line(int fd);
-ssize_t	read_buffer(int fd, char *buf);
-char	*grow_line(char *line, size_t line_len, size_t append_len,
-			size_t *capacity);
-char	*append_line(char *line, size_t *line_len, char *buf,
-			size_t append_len);
+bool    value_repeated(int num, t_node *a);
+bool    stack_sorted(t_node *a);
+t_node  *find_extreme_node(t_node *stack, char mode);
 
 // utils
 // push_swap: isdigit, memset; gnl: strlen, memcpy, memchr

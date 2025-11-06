@@ -1,5 +1,7 @@
 #include "push_swap.h"
 
+static t_node  *find_cheapest_node(t_stack *src);
+
 /*
 DESCRIPTION
     It pushes the node to the target stack.
@@ -11,7 +13,7 @@ void    push_node_to_target(t_stack *src, t_stack *dst, char src_name, char dst_
     int     i;
 
     i = 0;
-    node = find_cheapest_node(src, dst);
+    node = find_cheapest_node(src);
     while (i < node->rot_both_cost)
     {
         if (node->rotate)
@@ -26,66 +28,6 @@ void    push_node_to_target(t_stack *src, t_stack *dst, char src_name, char dst_
         push(src, dst, PB);
     else
         push(src, dst, PA);
-}
-
-/*
-DESCRIPTION
-    It finds the cheapest node to push to the target stack.
-*/
-
-t_node  *find_cheapest_node(t_stack *src, t_stack *dst)
-{
-    t_node      *current;
-    t_node      *cheapest;
-
-    calculate_cost_to_top(src);
-    calculate_cost_to_top(dst);
-    current = src->first;
-    cheapest = src->first;
-    while (current)
-    {
-        current->rot_both_cost = 0;
-        if (current->rotate == current->target->rotate)
-        {
-            if (current->cost <= current->target->cost)
-                current->rot_both_cost = current->cost;
-            else
-                current->rot_both_cost = current->target->cost;
-        }
-        current->total_cost = current->cost + current->target->cost - current->rot_both_cost;
-        if (current->total_cost < cheapest->total_cost)
-            cheapest = current;
-        current = current->next;
-    }
-    return (cheapest);
-}
-
-/*
-DESCRIPTION
-    It calculates the cost to bring the node to the top of the stack.
-*/
-
-void    calculate_cost_to_top(t_stack *stack)
-{
-    t_node  *current;
-    int     i;
-    int     median;
-
-    i = 0;
-    current = stack->first;
-    median = stack->len / 2 + 1;
-    while (current && i < median)
-    {
-        current->cost = i++;
-        current->rotate = true;
-        current = current->next;
-    }
-    while (current && i < stack->len)
-    {
-        current->cost = stack->len - i++;
-        current->rotate = false;
-        current = current->next;
-    }
 }
 
 /*
@@ -107,4 +49,34 @@ void    bring_node_to_top(t_node *node, int node_cost, t_stack *stack, char stac
             rev_rotate(stack , RRB);
         node_cost--;
     }
+}
+
+/*
+DESCRIPTION
+    It finds the cheapest node to push to the target stack.
+*/
+
+static t_node  *find_cheapest_node(t_stack *stack)
+{
+    t_node      *current;
+    t_node      *cheapest;
+
+    current = stack->first;
+    cheapest = stack->first;
+    while (current)
+    {
+        current->rot_both_cost = 0;
+        if (current->rotate == current->target->rotate)
+        {
+            if (current->cost <= current->target->cost)
+                current->rot_both_cost = current->cost;
+            else
+                current->rot_both_cost = current->target->cost;
+        }
+        current->total_cost = current->cost + current->target->cost - current->rot_both_cost;
+        if (current->total_cost < cheapest->total_cost)
+            cheapest = current;
+        current = current->next;
+    }
+    return (cheapest);
 }

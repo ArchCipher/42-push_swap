@@ -12,6 +12,12 @@
 
 #include "push_swap.h"
 
+static ssize_t	read_buffer(int fd, char *buf);
+static char	*grow_line(char *line, size_t line_len, size_t append_len,
+			size_t *capacity);
+static char	*append_line(char *line, size_t *line_len, char *buf,
+			size_t append_len);
+
 /*
 	NAME
 		get_next_line
@@ -28,6 +34,7 @@
 	EXTERNAL FUNC(S)
 		read, malloc, free
 */
+
 
 char	*get_next_line(int fd)
 {
@@ -62,7 +69,7 @@ DESCRIPTION
 		or upto end of buffer or EOF. Returns -1 on error or 0 on EOF.
 */
 
-ssize_t	read_buffer(int fd, char *buf)
+static ssize_t	read_buffer(int fd, char *buf)
 {
 	ssize_t	bytes_read;
 	char	*nl_pos;
@@ -88,7 +95,7 @@ DESCRIPTION
 	new line, or NULL if the allocation fails or if src is NULL.
 */
 
-char	*grow_line(char *src, size_t src_len, size_t append_len,
+static char	*grow_line(char *src, size_t src_len, size_t append_len,
 		size_t *capacity)
 {
 	char	*dst;
@@ -119,7 +126,7 @@ DESCRIPTION
 	new line, or NULL if the allocation fails or if line is NULL.
 */
 
-char	*append_line(char *line, size_t *line_len, char *buf, size_t append_len)
+static char	*append_line(char *line, size_t *line_len, char *buf, size_t append_len)
 {
 	ft_memcpy(line + *line_len, buf, append_len);
 	*line_len += append_len;
