@@ -17,9 +17,9 @@ void    push_node_to_target(t_stack *src, t_stack *dst, char src_name, char dst_
     while (i < node->rot_both_cost)
     {
         if (node->rotate)
-            rotate_both(src, dst, UP);
+            rotate_both(src, dst, UP, true);
         else
-            rotate_both(src, dst, DOWN);
+            rotate_both(src, dst, DOWN, true);
         i++;
     }
     bring_node_to_top(node, node->cost - node->rot_both_cost, src, src_name);

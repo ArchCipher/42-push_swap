@@ -10,6 +10,8 @@
 # include <stdlib.h>    // malloc, free
 # include <unistd.h>    // read, write, ssize_t
 
+# define ERROR "Error\n"
+
 # define STACK_A 'A'
 # define STACK_B 'B'
 
@@ -80,8 +82,8 @@ void    rotate(t_stack *stack, char *str);
 void    rev_rotate(t_stack *stack, char *str);
 
 // stack_ops2
-void    swap_both(t_stack *a, t_stack *b);
-void    rotate_both(t_stack *a, t_stack *b, char direction);
+void    swap_both(t_stack *a, t_stack *b, bool print);
+void    rotate_both(t_stack *a, t_stack *b, char direction, bool print);
 
 // sort_utils
 bool    value_repeated(int num, t_node *a);
@@ -89,13 +91,10 @@ bool    stack_sorted(t_node *a);
 t_node  *find_extreme_node(t_node *stack, char mode);
 
 // utils
-// push_swap: isdigit, memset; gnl: strlen, memcpy, memchr
-int	    ft_isdigit(int c);
 void	*ft_memset(void *b, int c, size_t len);
+int     ft_strcmp(const char *s1, const char *s2);
 size_t	ft_strlen(const char *s);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
 void	*ft_memchr(const void *s, int c, size_t n);
-
-// void    print_stack(t_node *a);
 
 #endif

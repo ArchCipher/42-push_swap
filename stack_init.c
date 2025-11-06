@@ -1,7 +1,8 @@
 #include "push_swap.h"
 
-static int     parse_int(char **str);
+static int      parse_int(char **str);
 static t_node	*new_node(int num);
+static int      ft_isdigit(int c);
 
 /*
 DESCRIPTION
@@ -83,4 +84,9 @@ static t_node	*new_node(int num)
     ft_memset(new, 0, sizeof(t_node));
 	new->value = num;
 	return (new);
+}
+
+static int	ft_isdigit(int c)
+{
+	return (c >= '0' && c <= '9');
 }
