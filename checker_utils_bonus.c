@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   checker_utils_bonus.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kmurugan <kmurugan@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/06 18:14:22 by kmurugan          #+#    #+#             */
+/*   Updated: 2025/11/06 19:19:39 by kmurugan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
 /*
 DESCRIPTION
-    It performs the operations given to it on the stack.
+	It performs the operations given to it on the stack.
 	In case of invlid operation it returns 0.
 */
 
@@ -12,7 +24,7 @@ int	parse_operation(char *line, t_stack *a, t_stack *b)
 		swap(a, NULL);
 	else if (ft_strcmp(line, SB) == 0)
 		swap(b, NULL);
-    else if (ft_strcmp(line, PA) == 0)
+	else if (ft_strcmp(line, PA) == 0)
 		push(b, a, NULL);
 	else if (ft_strcmp(line, PB) == 0)
 		push(a, b, NULL);
@@ -24,7 +36,7 @@ int	parse_operation(char *line, t_stack *a, t_stack *b)
 		rev_rotate(a, NULL);
 	else if (ft_strcmp(line, RRB) == 0)
 		rev_rotate(b, NULL);
-    else if (ft_strcmp(line, SS) == 0)
+	else if (ft_strcmp(line, SS) == 0)
 		swap_both(a, b, false);
 	else if (ft_strcmp(line, RR) == 0)
 		rotate_both(a, b, UP, false);
@@ -37,8 +49,8 @@ int	parse_operation(char *line, t_stack *a, t_stack *b)
 
 /*
 DESCRIPTION
-	Prints "OK" if the stack is sorted in ascending order, "KO" if not followed by an '\n'
-    on the standard output. It frees the stacks.
+	Prints "OK" if the stack is sorted in ascending order, "KO" if not,
+	followed by an '\n' on the standard output. It frees the stacks.
 */
 
 void	print_output(t_stack *a, t_stack *b)
@@ -51,14 +63,15 @@ void	print_output(t_stack *a, t_stack *b)
 
 /*
 DESCRIPTION
-	It frees the line and stacks and prints "Error" followed by an '\n' on the standard error.
+	It frees the line and stacks and prints "Error" followed by an '\n'
+	on the standard error.
 */
 
-int error_handler(char *line, t_stack *a, t_stack *b)
+int	error_handler(char *line, t_stack *a, t_stack *b)
 {
 	free(line);
 	free_stack(a);
 	free_stack(b);
-    write(STDERR_FILENO, ERROR, 6);
-    return (-1);
+	write(STDERR_FILENO, ERROR, 6);
+	return (-1);
 }

@@ -12,14 +12,19 @@ HEADER		= -I.
 
 #			Sources & Objects
 MSRCS		= push_swap \
-			sort sort_execute
+			sort \
+			sort_execute
 
 BSRCS		= checker_bonus \
-			checker_utils_bonus get_next_line_bonus
+			checker_utils_bonus \
+			get_next_line_bonus
 
-SSRCS		= stack_ops1 stack_ops2 \
-			stack_init stack_utils \
-			sort_utils utils
+SSRCS		= stack_ops1 \
+			stack_ops2 \
+			stack_init \
+			stack_utils \
+			sort_utils \
+			utils
 
 MAN_SRCS	= $(addsuffix .c, $(MSRCS))
 BONUS_SRCS	= $(addsuffix .c, $(BSRCS))
