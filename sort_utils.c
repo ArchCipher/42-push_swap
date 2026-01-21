@@ -6,29 +6,13 @@
 /*   By: kmurugan <kmurugan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 18:44:00 by kmurugan          #+#    #+#             */
-/*   Updated: 2025/11/06 18:44:58 by kmurugan         ###   ########.fr       */
+/*   Updated: 2025/11/07 11:57:21 by kmurugan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
 static int	is_more_extreme(t_node *extreme, t_node *stack, char mode);
-
-/*
-DESCRIPTION
-	It checks if a value is repeated in the stack.
-*/
-
-bool	value_repeated(int num, t_node *a)
-{
-	while (a)
-	{
-		if (a->value == num)
-			return (true);
-		a = a->next;
-	}
-	return (false);
-}
 
 /*
 DESCRIPTION

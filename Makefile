@@ -39,12 +39,12 @@ BONUS_OBJS	= $(BONUS_SRCS:.c=.o) $(SHARED_OBJS)
 all: $(NAME)
 
 $(NAME): $(MAN_OBJS) 
-	$(CC) $(FLAGS) $(SFLAGS) -g $(HEADER) $? -o $@
+	$(CC) $(FLAGS) $(SFLAGS) -g $(HEADER) $^ -o $@
 
 bonus: $(BONUS)
 
 $(BONUS): $(BONUS_OBJS)
-	$(CC) $(FLAGS) $(SFLAGS) -g $(HEADER) $? -o $@
+	$(CC) $(FLAGS) $(SFLAGS) -g $(HEADER) $^ -o $@
 
 clean:
 	rm -f $(MAN_OBJS) $(BONUS_OBJS) $(SHARED_OBJS)

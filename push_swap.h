@@ -6,7 +6,7 @@
 /*   By: kmurugan <kmurugan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 19:18:50 by kmurugan          #+#    #+#             */
-/*   Updated: 2025/11/06 19:18:52 by kmurugan         ###   ########.fr       */
+/*   Updated: 2025/11/07 11:56:39 by kmurugan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,6 @@ void				rotate_both(t_stack *a, t_stack *b, char direction,
 						bool print);
 
 // sort_utils
-bool				value_repeated(int num, t_node *a);
 bool				stack_sorted(t_node *a);
 t_node				*find_extreme_node(t_node *stack, char mode);
 

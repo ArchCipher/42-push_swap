@@ -6,16 +6,16 @@
 /*   By: kmurugan <kmurugan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 18:54:43 by kmurugan          #+#    #+#             */
-/*   Updated: 2025/11/06 20:12:02 by kmurugan         ###   ########.fr       */
+/*   Updated: 2025/11/07 11:57:39 by kmurugan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-static int		parse_int(char **str);
+static int		parse_int(char **str, int argc);
 static t_node	*new_node(int num);
-static int		ft_isdigit(int c);
-static int		check_overflow(int num, int digit);
+static int		int_overflow(int num, int digit);
+static bool		int_repeated(int num, t_node *a);
 
 /*
 DESCRIPTION
@@ -34,9 +34,8 @@ int	init_stack_a(int argc, char **argv, t_stack *a)
 	{
 		if (argc == 2 && a->len > 0 && **argv == ' ')
 			(*argv)++;
-		num = parse_int(argv);
-		if ((errno == EINVAL || errno == ERANGE) || (argc > 2 && **argv)
-			|| value_repeated(num, a->first))
+		num = parse_int(argv, argc);
+		if (errno || int_repeated(num, a->first))
 			return (free_stack(a), 0);
 		new = new_node(num);
 		if (!new)
@@ -56,7 +55,7 @@ DESCRIPTION
 	overflow / underflow.
 */
 
-static int	parse_int(char **str)
+static int	parse_int(char **str, int argc)
 {
 	int	num;
 	int	sign;
@@ -68,15 +67,17 @@ static int	parse_int(char **str)
 		sign = -1;
 	if (**str == '-' || **str == '+')
 		(*str)++;
-	if (!ft_isdigit(**str))
+	if (!(**str >= '0' && **str <= '9'))
 		return (errno = EINVAL, -1);
-	while (ft_isdigit(**str))
+	while (**str >= '0' && **str <= '9')
 	{
-		if (check_overflow(num * sign, **str - '0'))
+		if (int_overflow(num * sign, **str - '0'))
 			return (errno = ERANGE, -1);
 		num = (num * 10) + (**str - '0');
 		(*str)++;
 	}
+	if ((argc > 2 && **str) || (argc == 2 && **str && **str != ' '))
+		return (errno = EINVAL, -1);
 	return (num * sign);
 }
 
@@ -103,14 +104,25 @@ DESCRIPTION
 	Returns 1 in case of overflow or underflow else 0.
 */
 
-static int	check_overflow(int num, int digit)
+static int	int_overflow(int num, int digit)
 {
 	if (num > 0)
 		return (num > INT_MAX / 10 || (num == INT_MAX / 10 && digit > 7));
 	return (num < INT_MIN / 10 || (num == INT_MIN / 10 && digit > 8));
 }
 
-static int	ft_isdigit(int c)
+/*
+DESCRIPTION
+	It checks if a value is repeated in the stack.
+*/
+
+static bool	int_repeated(int num, t_node *a)
 {
-	return (c >= '0' && c <= '9');
+	while (a)
+	{
+		if (a->value == num)
+			return (true);
+		a = a->next;
+	}
+	return (false);
 }
