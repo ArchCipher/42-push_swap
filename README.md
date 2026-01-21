@@ -26,19 +26,19 @@
 
 ### Stack Operations
 
-| Operation | Description | Example |
-|-----------|-------------|---------|
-| `sa` | Swap first two elements of stack A | `[3, 2, 1]` → `[2, 3, 1]` |
-| `sb` | Swap first two elements of stack B | `[5, 4]` → `[4, 5]` |
-| `ss` | `sa` and `sb` simultaneously | Both stacks swapped |
-| `pa` | Push top element from B to A | `A: [1] B: [2, 3]` → `A: [2, 1] B: [3]` |
-| `pb` | Push top element from A to B | `A: [2, 1] B: [3]` → `A: [1] B: [2, 3]` |
-| `ra` | Rotate stack A (top to bottom) | `[1, 2, 3]` → `[2, 3, 1]` |
-| `rb` | Rotate stack B (top to bottom) | `[4, 5]` → `[5, 4]` |
-| `rr` | `ra` and `rb` simultaneously | Both rotated |
-| `rra` | Reverse rotate stack A | `[1, 2, 3]` → `[3, 1, 2]` |
-| `rrb` | Reverse rotate stack B | `[4, 5]` → `[5, 4]` |
-| `rrr` | `rra` and `rrb` simultaneously | Both reverse rotated |
+| Operation | Description |
+|-----------|-------------|
+| `sa` | Swap first two elements of stack A |
+| `sb` | Swap first two elements of stack B |
+| `ss` | `sa` and `sb` simultaneously |
+| `pa` | Push top element from B to A |
+| `pb` | Push top element from A to B |
+| `ra` | Rotate stack A (top to bottom) |
+| `rb` | Rotate stack B (top to bottom) |
+| `rr` | `ra` and `rb` simultaneously |
+| `rra` | Reverse rotate stack A |
+| `rrb` | Reverse rotate stack B |
+| `rrr` | `rra` and `rrb` simultaneously |
 
 ---
 
@@ -46,22 +46,9 @@
 
 **Key Algorithm:** Greedy Sort / Turk Algorithm - Calculates cost of moving each element and selects the most efficient move at each step.
 
-### Small Stacks (2-5 elements)
-- **2 elements:** Use `sa` if needed
-- **3 elements:** Hardcoded optimal solution (max 2-3 operations)
-- **4-5 elements:** Simple insertion sort approach
-
-### Medium Stacks (6-100 elements)
-- **Chunk-based approach:** Divide stack into chunks
-- **Push chunks to B:** Move elements in chunks to stack B
-- **Sort chunks:** Sort each chunk independently
-- **Merge back:** Push sorted chunks back to A in order
-
-### Large Stacks (100+ elements)
-- **Optimized chunking:** Dynamic chunk size calculation
-- **Position tracking:** Track element positions for efficient moves
-- **Cost calculation:** Calculate cost of each possible move
-- **Greedy selection:** Choose moves that minimize total operations
+The implementation uses two distinct approaches based on stack size:
+- **Stack length 3:** Hardcoded optimal solution (see [`sort_3()`](sort.c#L24))
+- **Stack length > 3:** Greedy cost-based algorithm (see [`sort_stack()`](sort.c#L44))
 
 ---
 
@@ -93,6 +80,34 @@
 
 ---
 
+## Key Algorithms Implemented
+
+### 1. Small Stack Sort (Stack Length 3)
+- Hardcoded optimal solutions for 3-element stacks
+- Direct comparison and swap operations
+- Minimal operation count (2-3 operations)
+
+### 2. Cost-Based Optimization (Greedy Algorithm)
+- Calculate cost of moving each element (see [`sort.c`](sort.c) for implementation)
+- Consider both rotation and reverse rotation costs
+- Choose moves that minimize total operations
+- Optimize for combined operations (`rr`, `rrr`, `ss`)
+
+### 3. Position Tracking
+- Track current position of each element
+- Calculate shortest path to target position
+- Optimize rotation direction (forward vs reverse)
+
+### Other Algorithms Considered
+During development, I explored alternative approaches including:
+- **LIS (Longest Increasing Subsequence):** Identify longest sorted subsequence to minimize moves
+- **Radix Sort:** Sort by individual digits/positions
+- **Counting Sort:** Count occurrences and place elements in order
+
+The greedy cost-based approach was selected for its balance of efficiency and implementation simplicity.
+
+---
+
 ## Compilation & Usage
 
 ```bash
@@ -114,40 +129,14 @@ ARG="4 3 2 1 0"; ./push_swap $ARG | ./checker -v $ARG
 
 ---
 
-## Key Algorithms Implemented
-
-### 1. Small Stack Sort (2-5 elements)
-- Hardcoded optimal solutions for small inputs
-- Direct comparison and swap operations
-- Minimal operation count
-
-### 2. Chunk-Based Sort
-- Divide stack into logical chunks
-- Push chunks to stack B in order
-- Sort chunks individually
-- Merge back to stack A
-
-### 3. Cost-Based Optimization (Greedy Algorithm)
-- Calculate cost of moving each element (see [`sort.c`](sort.c) for implementation)
-- Consider both rotation and reverse rotation costs
-- Choose moves that minimize total operations
-- Optimize for combined operations (`rr`, `rrr`, `ss`)
-
-### 4. Position Tracking
-- Track current position of each element
-- Calculate shortest path to target position
-- Optimize rotation direction (forward vs reverse)
-
----
-
 ## Technical Highlights
 
 ### Key Functions
-- `stack_init()` - Initialize stack from arguments
-- `sort_stack()` - Main sorting algorithm
-- `calculate_costs()` - Calculate move costs for optimization
-- `execute_cheapest()` - Execute the most efficient move
-- `is_sorted()` - Check if stack is sorted
+- [`stack_init()`](stack_init.c#L28) - Initialize stack from arguments
+- [`sort_stack()`](sort.c#L44) - Main sorting algorithm
+- [`calculate_costs()`](sort.c#L132) - Calculate move costs for optimization
+- [`execute_cheapest()`](sort_execute.c#L25) - Execute the most efficient move
+- [`is_sorted()`](sort_utils.c#L22) - Check if stack is sorted
 
 ---
 
@@ -158,32 +147,6 @@ The project has been tested with:
 - Custom test scripts for various stack sizes and edge cases
 - Memory leak detection (AddressSanitizer/ASan)
 - Performance validation against benchmark requirements
-
----
-
-## Key Challenges & Solutions
-
-### Challenge 1: Minimizing Operations
-**Problem:** Finding the optimal sequence of operations  
-**Solution:** Implemented cost-based algorithm that calculates and compares move costs
-
-### Challenge 2: Handling Large Stacks
-**Problem:** Meeting operation count requirements for 100+ elements  
-**Solution:** Developed chunk-based approach with dynamic chunk sizing
-
-### Challenge 3: Optimizing Rotations
-**Problem:** Reducing redundant rotations  
-**Solution:** Combined operations (`rr`, `rrr`) and optimized rotation direction
-
-### Challenge 4: Position Calculation
-**Problem:** Efficiently finding target positions for elements  
-**Solution:** Pre-calculated positions and maintained sorted order tracking
-
----
-
-## Project Status
-
-✅ **Completed** - Both push_swap and checker implemented with optimal performance
 
 ---
 
